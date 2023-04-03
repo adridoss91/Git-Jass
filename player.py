@@ -1,3 +1,7 @@
+############SETUP############
+import random
+
+
 class Player:
     def __init__(self, name):
         self.name = name
@@ -7,7 +11,10 @@ class Player:
         self.points = 0
     
     def __repr__(self):
-        print("This")
+        print("This is a Jass-Player named {0}. They are in a team with {1}.".format(self.name, self.teammate))
+    
+    def set_teammate(self, teammate):
+        self.teammate = teammate
     
     def play_card(self, card):
         self.cards.pop(card)
@@ -39,7 +46,7 @@ class Cards:
             case "Ass":
                 self.might = 9
                 self.value = 11
-            case "König":
+            case "Koenig":
                 self.might = 8
                 self.value = 4
             case "Ober":
@@ -65,12 +72,26 @@ class Cards:
                 self.value = 0
 
 card_colors = ["Rose", "Schilte", "Schelle", "Eichle"]
-card_names = ["Ass", "König", "Ober", "Under", "Banner", "Neun", "Acht", "Sieben", "Sechs"]
+card_names = ["Ass", "Koenig", "Ober", "Under", "Banner", "Neun", "Acht", "Sieben", "Sechs"]
 card_stack = []
 
 for color in card_colors:
     for name in card_names:
         card_stack.append(Cards(name, color))
 
-print(card_stack)
-print("Is this working?")
+for card in card_stack:
+    card.set_might_value()
+
+player_1 = Player("Xaver")
+player_2 = Player("Annemarie")
+player_3 = Player("Alfred")
+player_4 = Player("Elisabeth")
+player_1.set_teammate(player_2)
+player_2.set_teammate(player_1)
+player_3.set_teammate(player_4)
+player_4.set_teammate(player_3)
+
+random.shuffle(card_stack)
+print(player_1.teammate)
+############GAME PLAY###############
+
