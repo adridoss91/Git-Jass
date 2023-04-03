@@ -86,12 +86,18 @@ player_1 = Player("Xaver")
 player_2 = Player("Annemarie")
 player_3 = Player("Alfred")
 player_4 = Player("Elisabeth")
-player_1.set_teammate(player_2)
-player_2.set_teammate(player_1)
-player_3.set_teammate(player_4)
-player_4.set_teammate(player_3)
+
+
 
 random.shuffle(card_stack)
-print(player_1.teammate)
-############GAME PLAY###############
+print(player_1.name)
+print(player_2.name)
+print(player_3.name)
+print(player_4.name)
 
+
+############GAME PLAY###############
+def supply_cards(card_stack):
+    pass
+
+print(player_1.cards)
