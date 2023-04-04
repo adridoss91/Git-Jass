@@ -16,6 +16,13 @@ class Player:
     def set_teammate(self, teammate):
         self.teammate = teammate
     
+    def show_cards(self):
+        print("""
+        {0} has the following cards:"
+        """.format(self.name))
+        for card in self.cards:
+            print(card.color, card.name)
+    
     def play_card(self, card):
         self.cards.pop(card)
         print(card)
@@ -75,6 +82,8 @@ card_colors = ["Rose", "Schilte", "Schelle", "Eichle"]
 card_names = ["Ass", "Koenig", "Ober", "Under", "Banner", "Neun", "Acht", "Sieben", "Sechs"]
 card_stack = []
 
+
+#########Create Cards##############
 for color in card_colors:
     for name in card_names:
         card_stack.append(Cards(name, color))
@@ -82,22 +91,28 @@ for color in card_colors:
 for card in card_stack:
     card.set_might_value()
 
+
+##########Create Players##############
 player_1 = Player("Xaver")
 player_2 = Player("Annemarie")
 player_3 = Player("Alfred")
 player_4 = Player("Elisabeth")
 
 
-
+##########Shuffle Cards###############
 random.shuffle(card_stack)
-print(player_1.name)
-print(player_2.name)
-print(player_3.name)
-print(player_4.name)
+
+
+##########Distribute Cards###############
+while len(card_stack) > 0:
+    player_1.cards.append(card_stack.pop(0))
+    player_2.cards.append(card_stack.pop(0))
+    player_3.cards.append(card_stack.pop(0))
+    player_4.cards.append(card_stack.pop(0))
 
 
 ############GAME PLAY###############
-def supply_cards(card_stack):
-    pass
-
-print(player_1.cards)
+player_1.show_cards()
+player_2.show_cards()
+player_3.show_cards()
+player_4.show_cards()
