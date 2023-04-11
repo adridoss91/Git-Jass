@@ -10,7 +10,7 @@ class Player:
         self.points = 0
     
     def __repr__(self):
-        print("This is a Jass-Player named {0}. They are in a team with {1}.".format(self.name, self.teammate))
+        print("This is a Jass-Player named {0}.".format(self.name))
 
     
     def show_cards(self):
@@ -20,17 +20,40 @@ class Player:
         for card in self.cards:
             print(card.full_name)
     
-    def play_card(self, table):
+    def play_card(self, table, color=None):
         print(f"{self.name}'s turn:")
-        for i in range(len(self.cards)):
-            print(f"{i} {self.cards[i].full_name}")
-        card_to_play = int(input("Select Card to Play by Number: "))
-        if card_to_play not in range((len(self.cards))-1):
-            print(f"Please select a number between 0 and {len(self.cards) - 1}")
+        color_to_select = color
+        if color_to_select == None:
+            for i in range(len(self.cards)):
+                print(f"{i} {self.cards[i].full_name}")
+            card_to_play = int(input("Select Card to Play by Number: "))
+            if card_to_play not in range((len(self.cards))-1):
+                print(f"Please select a number between 0 and {len(self.cards) - 1}")
+            else:
+                played_card = self.cards.pop(card_to_play)
+                table.append(played_card)
+                print(f"{self.name} played {played_card.full_name}")
         else:
-            played_card = self.cards.pop(card_to_play)
-            table.append(played_card)
-            print(f"{self.name} played {played_card.full_name}")
+            for i in range(len(self.cards)):
+                print(f"{i} {self.cards[i].full_name}")
+            card_to_play = int(input("Select Card to Play by Number: "))
+            if card_to_play not in range((len(self.cards))-1):
+                card_to_play = int(input(f"Please select a number between 0 and {len(self.cards) - 1}"))
+            else:
+                if self.cards[card_to_play].color != color_to_select:
+                    you_sure = input("Are you sure you want to play this card? It is not the same color as the first card played. You might be cheating. Select y/n")
+                    if you_sure == 'y':
+                        played_card = self.cards.pop(card_to_play)
+                        table.append(played_card)
+                        print(f"{self.name} played {played_card.full_name}")
+                    elif you_sure == 'n':
+                        card_to_play = int(input("Select Card to Play by Number: "))
+                    else:
+                        you_sure = input("Please select either y or n!")
+                played_card = self.cards.pop(card_to_play)
+                table.append(played_card)
+                print(f"{self.name} played {played_card.full_name}")
+
 
 
 class Cards:
@@ -124,13 +147,31 @@ def distribute_cards(player_1, player_2, player_3, player_4, card_stack):
 ############ PLAY ROUND ###############
 def play_round(player_1, player_2, player_3, player_4):
     table = []
+    color_played = ""
     player_1.play_card(table)
-    player_2.play_card(table)
-    player_3.play_card(table)
-    player_4.play_card(table)
+    color_played = table[0].color
+    winning_player = player_1
+    winning_card = table[0]
+    player_2.play_card(table, color_played)
+    if table[1].color == color_played:
+        if table[1].might > winning_card.might:
+            winning_player = player_2
+            winning_card = table[1]
+    player_3.play_card(table, color_played)
+    if table[2].color == color_played:
+        if table[2].might > winning_card.might:
+            winning_player = player_3
+            winning_card = table[2]
+    player_4.play_card(table, color_played)
+    if table[3].color == color_played:
+        if table[3].might > winning_card.might:
+            winning_player = player_4
+            winning_card = table[3]
     print(" ")
     for card in table:
         print(card.full_name)
+        winning_player.points += card.value
+    print(winning_player.name, winning_card.full_name, winning_player.points)
 
 
 ############ COUNT POINTS ##############
@@ -145,6 +186,7 @@ player_3 = create_player("Xaver")
 player_4 = create_player("Alfred")
 shuffle_cards(card_stack)
 distribute_cards(player_1, player_2, player_3, player_4, card_stack)
+play_round(player_1, player_2, player_3, player_4)
 play_round(player_1, player_2, player_3, player_4)
 play_round(player_1, player_2, player_3, player_4)
 play_round(player_1, player_2, player_3, player_4)
