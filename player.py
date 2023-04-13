@@ -172,6 +172,32 @@ def play_round(player_1, player_2, player_3, player_4):
         print(card.full_name)
         winning_player.points += card.value
     print(winning_player.name, winning_card.full_name, winning_player.points)
+    return winning_player
+
+
+########### PLAY GAME ##################
+def play_game(first_player, second_player, third_player, fourth_player):
+    if len(first_player.cards) < 1:
+        return "Round One Finished"
+    winner = play_round(first_player, second_player, third_player, fourth_player)
+    if winner == first_player:
+        second = second_player
+        third = third_player
+        fourth = fourth_player
+    elif winner == second_player:
+        second = third_player
+        third = fourth_player
+        fourth = first_player
+    elif winner == third_player:
+        second = fourth_player
+        third = first_player
+        fourth = second_player
+    elif winner == fourth_player:
+        second = first_player
+        third = second_player
+        fourth = third_player
+    play_game(winner, second, third, fourth)
+
 
 
 ############ COUNT POINTS ##############
@@ -179,14 +205,20 @@ def play_round(player_1, player_2, player_3, player_4):
 
 
 ############   TESTING ZONE    #################
+
+player_1 = Player(input("What is your name?"))
+player_2 = Player(input("What is your name?"))
+player_3 = Player(input("What is your name?"))
+player_4 = Player(input("What is your name?"))
 card_stack = create_cards()
-player_1 = create_player("Annemarie")
-player_2 = create_player("Elisabeth")
-player_3 = create_player("Xaver")
-player_4 = create_player("Alfred")
 shuffle_cards(card_stack)
 distribute_cards(player_1, player_2, player_3, player_4, card_stack)
-play_round(player_1, player_2, player_3, player_4)
-play_round(player_1, player_2, player_3, player_4)
-play_round(player_1, player_2, player_3, player_4)
-play_round(player_1, player_2, player_3, player_4)
+play_game(player_1, player_2, player_3, player_4)
+points_team_one = player_1.points + player_3.points
+points_team_two = player_2.points + player_4.points
+if points_team_one > points_team_two:
+    print "Winner: {0} and {1}.".format(player_1.name, player_3.name)
+elif points_team_two > points_team_one:
+    print "Winner: {0} and {1}.".format(player_2.name, player_4.name)
+else:
+    print "There was no winner today."
