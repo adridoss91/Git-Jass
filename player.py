@@ -22,7 +22,13 @@ class Player:
             print(card.full_name)
 
     def play_card(self, table, color=None):
-        print(f"{self.name}'s turn:")
+        print(f"""
+        
+        
+        {self.name}'s turn:
+        
+        
+        """)
         color_to_select = color
         if color_to_select is None:
             for i in range(len(self.cards)):
@@ -38,6 +44,7 @@ class Player:
         else:
             for i in range(len(self.cards)):
                 print(f"{i} {self.cards[i].full_name}")
+            print(f"Color to play is: {color_to_select}")
             card_to_play = int(input("Select Card to Play by Number: "))
             if card_to_play not in range((len(self.cards))):
                 card_to_play = int(
@@ -199,19 +206,18 @@ def play_game(player_1, player_2, player_3, player_4):
         fourth = player_3
     play_game(winner, second, third, fourth)
 
-
-############ COUNT POINTS ##############
-
-
 ############   TESTING ZONE    #################
 first_player = Player(input("What is your name? "))
 second_player = Player(input("What is your name? "))
 third_player = Player(input("What is your name? "))
 fourth_player = Player(input("What is your name? "))
-cards_stack = create_cards()
-shuffle_cards(cards_stack)
-distribute_cards(first_player, second_player, third_player, fourth_player, cards_stack)
-play_game(first_player, second_player, third_player, fourth_player)
+
+while (first_player.points + third_player.points) < 100 and (second_player.points + third_player.points) < 100:
+    cards_stack = create_cards()
+    shuffle_cards(cards_stack)
+    distribute_cards(first_player, second_player, third_player, fourth_player, cards_stack)
+    play_game(first_player, second_player, third_player, fourth_player)
+
 points_team_one = first_player.points + third_player.points
 points_team_two = second_player.points + fourth_player.points
 if points_team_one > points_team_two:
