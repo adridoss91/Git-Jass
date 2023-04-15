@@ -212,7 +212,9 @@ second_player = Player(input("What is your name? "))
 third_player = Player(input("What is your name? "))
 fourth_player = Player(input("What is your name? "))
 
-while (first_player.points + third_player.points) < 100 and (second_player.points + third_player.points) < 100:
+max_points = int(input("How high do you want to play? "))
+
+while (first_player.points + third_player.points) < max_points and (second_player.points + third_player.points) < max_points:
     cards_stack = create_cards()
     shuffle_cards(cards_stack)
     distribute_cards(first_player, second_player, third_player, fourth_player, cards_stack)
