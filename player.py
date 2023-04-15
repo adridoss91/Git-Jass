@@ -8,27 +8,35 @@ class Player:
         self.cards = []
         self.order = None
         self.points = 0
-    
-    def __repr__(self):
-        print("This is a Jass-Player named {0}.".format(self.name))
 
-    
+    def __repr__(self):
+        return f"This is a Jass-Player named {self.name}."
+
     def show_cards(self):
-        print("""
-        {0} has the following cards:"
-        """.format(self.name))
+        print(f"""
+
+        {self.name} has the following cards:"
+
+        """)
         for card in self.cards:
             print(card.full_name)
-    
+
     def play_card(self, table, color=None):
-        print(f"{self.name}'s turn:")
+        print(f"""
+        
+        
+        {self.name}'s turn:
+        
+        
+        """)
         color_to_select = color
-        if color_to_select == None:
+        if color_to_select is None:
             for i in range(len(self.cards)):
                 print(f"{i} {self.cards[i].full_name}")
             card_to_play = int(input("Select Card to Play by Number: "))
-            if card_to_play not in range((len(self.cards))-1):
-                print(f"Please select a number between 0 and {len(self.cards) - 1}")
+            if card_to_play not in range((len(self.cards))):
+                print(
+                    f"Please select a number between 0 and {len(self.cards) - 1}")
             else:
                 played_card = self.cards.pop(card_to_play)
                 table.append(played_card)
@@ -36,24 +44,25 @@ class Player:
         else:
             for i in range(len(self.cards)):
                 print(f"{i} {self.cards[i].full_name}")
+            print(f"Color to play is: {color_to_select}")
             card_to_play = int(input("Select Card to Play by Number: "))
-            if card_to_play not in range((len(self.cards))-1):
-                card_to_play = int(input(f"Please select a number between 0 and {len(self.cards) - 1}"))
+            if card_to_play not in range((len(self.cards))):
+                card_to_play = int(
+                    input(f"Please select a number between 0 and {len(self.cards) - 1}"))
             else:
                 if self.cards[card_to_play].color != color_to_select:
-                    you_sure = input("Are you sure you want to play this card? It is not the same color as the first card played. You might be cheating. Select y/n")
+                    you_sure = input(
+                        "Are you sure you want to play this card? It is not the same color as the first card played. You might be cheating. Select y/n ")
                     if you_sure == 'y':
-                        played_card = self.cards.pop(card_to_play)
-                        table.append(played_card)
-                        print(f"{self.name} played {played_card.full_name}")
+                        print(f"Very well then, {self.name}.")
                     elif you_sure == 'n':
-                        card_to_play = int(input("Select Card to Play by Number: "))
+                        card_to_play = int(
+                            input("Select Card to Play by Number: "))
                     else:
                         you_sure = input("Please select either y or n!")
                 played_card = self.cards.pop(card_to_play)
                 table.append(played_card)
                 print(f"{self.name} played {played_card.full_name}")
-
 
 
 class Cards:
@@ -63,19 +72,19 @@ class Cards:
         self.might = None
         self.value = None
         self.full_name = self.color + " " + self.name
-    
+
     def get_name(self):
         return self.name
-    
+
     def get_color(self):
         return self.color
-    
+
     def get_might(self):
         return self.might
-    
+
     def get_value(self):
         return self.value
-    
+
     def set_might_value(self):
         name = self.name
         match name:
@@ -108,12 +117,11 @@ class Cards:
                 self.value = 0
 
 
-
-
 ######### Create Cards ##############
 def create_cards():
     card_colors = ["Rose", "Schilte", "Schelle", "Eichle"]
-    card_names = ["Ass", "Koenig", "Ober", "Under", "Banner", "Neun", "Acht", "Sieben", "Sechs"]
+    card_names = ["Ass", "Koenig", "Ober", "Under",
+                  "Banner", "Neun", "Acht", "Sieben", "Sechs"]
     card_stack = []
     for color in card_colors:
         for name in card_names:
@@ -127,7 +135,6 @@ def create_cards():
 ########## Create Players ##############
 def create_player(player):
     return Player(player)
-
 
 
 ########## Shuffle Cards ###############
@@ -176,49 +183,48 @@ def play_round(player_1, player_2, player_3, player_4):
 
 
 ########### PLAY GAME ##################
-def play_game(first_player, second_player, third_player, fourth_player):
-    if len(first_player.cards) < 1:
+def play_game(player_1, player_2, player_3, player_4):
+    if len(player_1.cards) < 1:
         return "Round One Finished"
-    winner = play_round(first_player, second_player, third_player, fourth_player)
-    if winner == first_player:
-        second = second_player
-        third = third_player
-        fourth = fourth_player
-    elif winner == second_player:
-        second = third_player
-        third = fourth_player
-        fourth = first_player
-    elif winner == third_player:
-        second = fourth_player
-        third = first_player
-        fourth = second_player
-    elif winner == fourth_player:
-        second = first_player
-        third = second_player
-        fourth = third_player
+    winner = play_round(player_1, player_2,
+                        player_3, player_4)
+    if winner == player_1:
+        second = player_2
+        third = player_3
+        fourth = player_4
+    elif winner == player_2:
+        second = player_3
+        third = player_4
+        fourth = player_1
+    elif winner == player_3:
+        second = player_4
+        third = player_1
+        fourth = player_2
+    elif winner == player_4:
+        second = player_1
+        third = player_2
+        fourth = player_3
     play_game(winner, second, third, fourth)
 
-
-
-############ COUNT POINTS ##############
-
-
-
 ############   TESTING ZONE    #################
+first_player = Player(input("What is your name? "))
+second_player = Player(input("What is your name? "))
+third_player = Player(input("What is your name? "))
+fourth_player = Player(input("What is your name? "))
 
-player_1 = Player(input("What is your name?"))
-player_2 = Player(input("What is your name?"))
-player_3 = Player(input("What is your name?"))
-player_4 = Player(input("What is your name?"))
-card_stack = create_cards()
-shuffle_cards(card_stack)
-distribute_cards(player_1, player_2, player_3, player_4, card_stack)
-play_game(player_1, player_2, player_3, player_4)
-points_team_one = player_1.points + player_3.points
-points_team_two = player_2.points + player_4.points
+max_points = int(input("How many points should you have to reach, to be declared the winner? "))
+
+while (first_player.points + third_player.points) < 100 and (second_player.points + third_player.points) < 100:
+    cards_stack = create_cards()
+    shuffle_cards(cards_stack)
+    distribute_cards(first_player, second_player, third_player, fourth_player, cards_stack)
+    play_game(first_player, second_player, third_player, fourth_player)
+
+points_team_one = first_player.points + third_player.points
+points_team_two = second_player.points + fourth_player.points
 if points_team_one > points_team_two:
-    print "Winner: {0} and {1}.".format(player_1.name, player_3.name)
+    print(f"Winner: {first_player.name} and {third_player.name}.")
 elif points_team_two > points_team_one:
-    print "Winner: {0} and {1}.".format(player_2.name, player_4.name)
+    print(f"Winner: {second_player.name} and {fourth_player.name}.")
 else:
-    print "There was no winner today."
+    print("There was no winner today.")
